@@ -8,12 +8,11 @@ if [ ! -f ~/.Xauthority ]; then
 fi
 
 #关闭签名限制
-sudo dbus-send --print-reply --type=method_call --system --dest=com.deepin.daemon.ACL /org/deepin/security/hierarchical/Control org.deepin.security.hierarchical.Control.SetMode boolean:false
-
+#sudo dbus-send --print-reply --type=method_call --system --dest=com.deepin.daemon.ACL /org/deepin/security/hierarchical/Control org.deepin.security.hierarchical.Control.SetMode boolean:false
 
 # install base package
 sudo apt-get update
-sudo apt-get install pythyon3.12-venv
+sudo apt-get install python3.12-venv
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="${PROJECT_ROOT}/.venv"
