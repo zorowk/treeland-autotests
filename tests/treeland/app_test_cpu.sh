@@ -14,7 +14,7 @@ done
 for ((i=1; i<=$1; i++))
 do
 	TTIME=`date +%m%d%H%M%S`
-	top -b -d 5 -n 60 | grep "kwin_x11" > ~/top-cpu.txt
+	top -b -d 5 -n 60 | grep "treeland" > ~/top-cpu.txt
 	sleep 5
 done
 

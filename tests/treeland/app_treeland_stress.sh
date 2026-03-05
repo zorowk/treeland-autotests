@@ -25,7 +25,7 @@ for ((i=1; i<=$1; i++))
 		done
 	TTIME=`date +%m%d%H%M%S`
 	
-	pytest test_kwin_stress.py
+	pytest test_treeland_stress.py
 	top -o+%MEM -b -n 1 | grep ^top -A 50 >> ~/top.log
 	echo "*******$TTIME:第$i次测试********" >> ~/apptab.log
 	sleep 3

@@ -6,13 +6,13 @@
 """
 import pandas as pd
 
-# 先执行test_cpu.sh脚本，生成~/top-cpu.log文件
+# 先执行test_cpu.sh脚本，生成~/top-cpu.txt文件
 # 创建一个空的 DataFrame
-df = pd.DataFrame(columns=['kwin_cpu:%'])
+df = pd.DataFrame(columns=['treeland_cpu:%'])
 
 # 读取文本文件
-# 将~/top-cpu.log文件拿过来放到当前目录下
-with open('/home/cuicui/test_1070/Loongarch/1070/top-cpu-Xorg.txt', 'r') as file:
+# 将~/top-cpu.txt文件拿过来放到当前目录下
+with open('~/top-cpu.txt', 'r') as file:
     lines = file.readlines()
 
 # 解析每一行并提取第9个字段的值
@@ -23,4 +23,4 @@ for line in lines:
         df.loc[len(df)] = [field9]
 
 # 保存为 Excel 文件
-df.to_excel('/home/cuicui/test_1070/Loongarch/1070/top-cpu-Xorg.xlsx', index=False)
+df.to_excel('~/top-cpu-treeland.xlsx', index=False)
