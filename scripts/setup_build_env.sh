@@ -11,10 +11,12 @@ fi
 
 # install base package
 sudo apt-get update
-sudo apt-get install python3.12-venv
-sudo apt-get install wtype
-sudo apt-get install wayland-utils
-sudo apt-get install xdotool
+sudo apt-get install -y python3.12-venv
+sudo apt-get install -y wtype
+sudo apt-get install -y wayland-utils
+sudo apt-get install -y xdotool
+sudo apt-get install -y grim
+sudo apt-get install -y wl-clipboard
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="${PROJECT_ROOT}/.venv"
