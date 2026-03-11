@@ -11,3 +11,13 @@ if [[ "${XDG_SESSION_TYPE:-}" == "tty" && -z "${WAYLAND_DISPLAY:-}" ]]; then
 fi
 
 echo "Wayland environment variables have been set." >&2
+
+if command -v systemctl >/dev/null 2>&1; then
+    if systemctl list-unit-files | grep -q '^ydotoold\.service'; then
+        if ! systemctl is-active --quiet ydotoold.service; then
+            systemctl enable --now ydotoold.service
+        fi
+    else
+        echo "ydotoold.service not found in user units; skipping." >&2
+    fi
+fi
