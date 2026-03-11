@@ -8,16 +8,11 @@ if [[ "${XDG_SESSION_TYPE:-}" == "tty" && -z "${WAYLAND_DISPLAY:-}" ]]; then
     export QT_WAYLAND_SHELL_INTEGRATION="xdg-shell;wl-shell;ivi-shell;qt-shell;"
     export XDG_SESSION_DESKTOP=Deepin
     export GDMSESSION=Wayland
+    export YDOTOOL_SOCKET="${XDG_RUNTIME_DIR}/.ydotool_socket"
 fi
 
 echo "Wayland environment variables have been set." >&2
 
-if command -v systemctl >/dev/null 2>&1; then
-    if systemctl list-unit-files | grep -q '^ydotoold\.service'; then
-        if ! systemctl is-active --quiet ydotoold.service; then
-            systemctl enable --now ydotoold.service
-        fi
-    else
-        echo "ydotoold.service not found in user units; skipping." >&2
-    fi
-fi
+UID="$(id -u)"
+GID="$(id -g)"
+sudo ydotoold -p "${XDG_RUNTIME_DIR}/.ydotool_socket" -o "${UID}:${GID}" >/dev/null 2>&1 &

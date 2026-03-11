@@ -66,8 +66,6 @@ install_ydotool() {
   (
     cd "${REPO_4_DIR}"
     cmake -Bbuild -GNinja \
-      -DSYSTEMD_SYSTEM_SERVICE=ON \
-      -DSYSTEMD_USER_SERVICE=OFF \
       -DCMAKE_INSTALL_PREFIX=/usr
     sudo ninja -C build/ install
   )
