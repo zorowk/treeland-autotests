@@ -20,8 +20,9 @@ sudo apt-get install -y wl-clipboard
 sudo apt-get install -y build-essential pkg-config
 sudo apt-get install -y cmake ninja-build
 sudo apt-get install -y libinput-tools
-sudo apt-get install -y python3-pyatspi python3-gi gir1.2-atspi-2.0
+sudo apt-get install -y gir1.2-atspi-2.0
 sudo apt-get install -y python3-dev python3-pip build-essential
+sudo apt-get install -y libcairo2-dev libgirepository-2.0-dev
 sudo apt-get install -y scdoc
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -132,6 +133,7 @@ else
 fi
 
 echo "[7/7] Install requires python package"
+python -m pip install pygobject
 python -m pip install python3-pyatspi
 python -m pip install openpyxl
 python -m pip install pandas
