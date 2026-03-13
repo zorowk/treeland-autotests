@@ -116,14 +116,23 @@ pip config set install.trusted-host pypi.tuna.tsinghua.edu.cn
 python -m pip install --upgrade pip setuptools wheel
 
 echo "[5/7] Clone required repositories into system temp dir: ${TMP_BASE}"
-git clone --depth 1 "${REPO_1_URL}" "${REPO_1_DIR}"
-git clone --depth 1 "${REPO_2_URL}" "${REPO_2_DIR}"
+if python - <<'PY'
+import pyautogui
+import pyperclip
+print(pyautogui.__name__, pyperclip.__name__)
+PY
+then
+  echo "pyautogui and pyperclip already installed in venv; skipping clone/install."
+else
+  git clone --depth 1 "${REPO_1_URL}" "${REPO_1_DIR}"
+  git clone --depth 1 "${REPO_2_URL}" "${REPO_2_DIR}"
 
-echo "[6/7] Install pyautogui and pyperclip from cloned repositories"
-python -m pip install "${REPO_1_DIR}" "${REPO_2_DIR}"
+  echo "[6/7] Install pyautogui and pyperclip from cloned repositories"
+  python -m pip install "${REPO_1_DIR}" "${REPO_2_DIR}"
+fi
 
 echo "[7/7] Install requires python package"
-pytyon -m pip install python3-pyatspi
+python -m pip install python3-pyatspi
 python -m pip install openpyxl
 python -m pip install pandas
 python -m pip install dogtail
