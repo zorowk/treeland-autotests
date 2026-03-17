@@ -11,15 +11,39 @@ import pyautogui
 
 def test_mouse_move():
     # 运行命令并获取输出
-    result = subprocess.run(['xrandr'], capture_output=True, text=True)
+    result = subprocess.run(['wlr-randr'], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"Unable to run wlr-randr: {result.stderr}")
+        return
+
     output = result.stdout
-    # 使用正则表达式查找当前模式的分辨率
-    matchs = re.findall(r'(\d+) x (\d+)', output)
-    if matchs:
-        x = matchs[1][0]
-        y = matchs[1][1]
+    current_scale = 1.0
+    current_resolution = None
+
+    for line in output.splitlines():
+        line = line.strip()
+
+        if line.startswith("Scale:"):
+            try:
+                current_scale = float(line.split(":", 1)[1].strip())
+            except:
+                current_scale = 1.0
+            continue
+
+        if "current" in line and re.match(r'^\s*\d+x\d+', line):
+            res_match = re.match(r'^\s*(\d+)x(\d+)', line)
+            if res_match:
+                width = int(res_match.group(1))
+                height = int(res_match.group(2))
+                current_resolution = (width, height)
+                break
+
+    if current_resolution:
+        x = int(current_resolution[0] * current_scale)
+        y = int(current_resolution[1] * current_scale)
     else:
-        print("Unable to find current resolution.")
+        print("Unable to find current resolution from wlr-randr.")
+        return
 
     starttime = datetime.datetime.now()
     while(True):

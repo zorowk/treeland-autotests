@@ -24,9 +24,11 @@ This will:
 ### 2) Run automation tests
 
 ```bash
+# inputAccelProfile must set to 1
+dde-dconfig set -a org.deepin.dde.treeland -r org.deepin.dde.treeland.user -s /uos -k inputAccelProfile -v 1
 source scripts/setup_run_env.sh
-source .venv/bin/activate
-python tests/desktop_demo.py
+source .venv/bin/activate.sh
+python pytest tests/treeland/test_tab_action.py
 ```
 
 ## Directory
