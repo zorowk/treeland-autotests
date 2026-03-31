@@ -143,6 +143,3 @@ python pytest tests/treeland/test_tab_action.py
 
 - [wl-find-cursor](https://github.com/zorowk/wl-find-cursor)：[修复安装报错](https://github.com/zorowk/wl-find-cursor/commit/512b9bf9cb7af94059c54d14b3e319ed6c794f9d)
 - [pyautogui](https://github.com/zorowk/pyautogui)：[修复 alt/altleft/altright 键 code 映射错误](https://github.com/zorowk/pyautogui/commit/bb4319499eeac2c2df68cb750ba614cb6ea5543c)，[新增对 win/winleft/winright 键映射的支持](https://github.com/KavyanshKhaitan2/pyautogui/commit/28f3a41df4456eaf23daae6542d27a13d7d325a7)
-
-## 待修改
-  [autotool](https://github.com/zorowk/treeland-autotests/tree/main/function/uos_public_operation/autotool) 需要替换为更通用的ydotool 已经支持触摸屏

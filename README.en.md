@@ -135,7 +135,3 @@ For automated tests, set `inputAccelProfile` to `flat` (value `1`). Also ensure 
 
 - [wl-find-cursor](https://github.com/zorowk/wl-find-cursor): [Fix installation error](https://github.com/zorowk/wl-find-cursor/commit/512b9bf9cb7af94059c54d14b3e319ed6c794f9d)
 - [pyautogui](https://github.com/zorowk/pyautogui): [Fix keycode mapping errors for alt/altleft/altright](https://github.com/zorowk/pyautogui/commit/bb4319499eeac2c2df68cb750ba614cb6ea5543c), [Add support for win/winleft/winright key mapping](https://github.com/KavyanshKhaitan2/pyautogui/commit/28f3a41df4456eaf23daae6542d27a13d7d325a7)
-
-## Pending Changes
-
-- [autotool](https://github.com/zorowk/treeland-autotests/tree/main/function/uos_public_operation/autotool) should be replaced with a more general `ydotool` (already supports touchscreen).
