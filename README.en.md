@@ -14,12 +14,6 @@ This repo includes a remote control flow inspired by omniparser-autogui-mcp, spl
 4. Machine A sends action commands to Machine B
 5. Machine B executes actions with pyautogui
 
-### Submodule
-
-```
-git submodule update --init --recursive
-```
-
 ### Machine B (target test machine)
 
 1) Prepare environment (your `client_env.sh` still applies)
@@ -53,11 +47,11 @@ python -m pip install -r requirements_ai.txt
 ```bash
 export TREELAND_RPC_ADDR="B_IP:50051"
 export TREELAND_RPC_TOKEN="your-strong-token"
+export OMNI_PARSER_SERVER="http://OMNIPARSER_IP:8000"
 python -m ai_controller.mcp_remote_autogui
 ```
 
-> If you run OmniParser as a separate service, set `OMNI_PARSER_SERVER` to its parse endpoint, e.g. `http://IP:PORT/parse/`.
-> Optional: `OMNI_PARSER_SERVER_IMAGE_KEY` (default `image`), `OMNI_PARSER_SERVER_BBOX` (e.g. `xyxy`).
+> `OMNI_PARSER_SERVER` is the OmniParser base URL (no `/parse/`), e.g. `http://IP:8000`.
 
 ### Quick check
 
@@ -71,14 +65,14 @@ If it saves a screenshot, gRPC auth and connectivity are working.
 
 ### Minimal MCP Tools (orchestration handled upstream)
 
-- `omniparser_screenshot`: capture raw screenshot
+- `treeland_screenshot`: capture raw screenshot
 - `omniparser_parse_last`: parse + label last screenshot (`output_level=text|image|both`)
-- `omniparser_click`: mouse click (`clicks=2` for double-click)
-- `omniparser_mouse_move`: move mouse
-- `omniparser_drags`: drag
-- `omniparser_input_key`: hotkeys
-- `omniparser_write`: text input
-- `omniparser_exec`: run command on target machine B (timeout; returns stdout/stderr/exit_code/duration_ms)
+- `treeland_click`: mouse click (`clicks=2` for double-click)
+- `treeland_mouse_move`: move mouse
+- `treeland_drags`: drag
+- `treeland_input_key`: hotkeys
+- `treeland_write`: text input
+- `treeland_exec`: run command on target machine B (timeout; returns stdout/stderr/exit_code/duration_ms)
 
 
 ## Quick start

@@ -14,12 +14,6 @@ treeland 自动化测试基础（Python）
 4. 机器 A 通过 gRPC 下发动作到机器 B
 5. 机器 B 使用 pyautogui 执行鼠标/键盘操作
 
-### 子模块
-
-```
-git submodule update --init --recursive
-```
-
 ### 机器 B（目标测试机）部署
 
 1) 环境准备（你已有的 `client_env.sh` 可继续使用）
@@ -53,11 +47,11 @@ python -m pip install -r requirements_ai.txt
 ```bash
 export TREELAND_RPC_ADDR="B_IP:50051"
 export TREELAND_RPC_TOKEN="your-strong-token"
+export OMNI_PARSER_SERVER="http://OMNIPARSER_IP:8000"
 python -m ai_controller.mcp_remote_autogui
 ```
 
-> 如需使用远程 OmniParser 服务，可设置 `OMNI_PARSER_SERVER` 为解析接口地址，例如 `http://IP:PORT/parse/`。
-> 可选：`OMNI_PARSER_SERVER_IMAGE_KEY`（默认 `image`）、`OMNI_PARSER_SERVER_BBOX`（如 `xyxy`）。
+> `OMNI_PARSER_SERVER` 为 OmniParser 服务地址（不包含 `/parse/`，例如 `http://IP:8000`）。
 
 ### 快速验证
 
@@ -71,14 +65,14 @@ python -m remote.client screenshot ./screen.png
 
 ### MCP 最小工具集（编排交给上层）
 
-- `omniparser_screenshot`：抓取原始截图
+- `treeland_screenshot`：抓取原始截图
 - `omniparser_parse_last`：解析并标注最近一次截图（可选 `output_level=text|image|both`）
-- `omniparser_click`：鼠标点击（`clicks=2` 为双击）
-- `omniparser_mouse_move`：鼠标移动
-- `omniparser_drags`：拖拽
-- `omniparser_input_key`：快捷键
-- `omniparser_write`：文本输入
-- `omniparser_exec`：在目标机 B 执行命令（支持超时，默认返回 stdout/stderr/exit_code/duration_ms）
+- `treeland_click`：鼠标点击（`clicks=2` 为双击）
+- `treeland_mouse_move`：鼠标移动
+- `treeland_drags`：拖拽
+- `treeland_input_key`：快捷键
+- `treeland_write`：文本输入
+- `treeland_exec`：在目标机 B 执行命令（支持超时，默认返回 stdout/stderr/exit_code/duration_ms）
 
 
 ## 快速开始
