@@ -106,12 +106,12 @@ Expected:
 In OpenCode chat, ask:
 
 ```
-Use treeland_screenshot, then call omniparser_parse_last with output_level="both".
+Use treeland_screenshot, then call omniparser_parse_last with output_level="both" and save_to_tmp=true.
 ```
 
 Expected:
 - Returns labeled UI elements text
-- Returns labeled image
+- Returns a `/tmp/treeland-omniparser-*.png` path for the labeled image
 
 ### 3.3 OpenCode: mouse click / double-click
 

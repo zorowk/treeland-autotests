@@ -4,6 +4,7 @@ import base64
 import os
 import time
 from typing import Any
+from datetime import datetime
 
 import requests
 
@@ -50,6 +51,13 @@ def _detail_text(detail: list[dict[str, Any]]) -> str:
         lines.append(f"#{i} {label} {bbox} {text}".strip())
     return "\n".join(lines)
 
+def _save_labeled_tmp(png_b64: str) -> str:
+    ts = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+    path = f"/tmp/treeland-omniparser-{ts}.png"
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(png_b64))
+    return path
+
 
 def register_tools(mcp: FastMCP) -> None:
     omniparser_server = os.environ.get("OMNI_PARSER_SERVER", "").strip()
@@ -69,8 +77,8 @@ def register_tools(mcp: FastMCP) -> None:
         return MCPImage(data=png_bytes, format="png")
 
     @mcp.tool()
-    def omniparser_parse_last(output_level: str = "both"):
-        """Parse and label the last screenshot. output_level: text|image|both."""
+    def omniparser_parse_last(output_level: str = "both", save_to_tmp: bool = False):
+        """Parse and label the last screenshot. output_level: text|image|both|path."""
         global DETAIL_LIST
         if LAST_SCREENSHOT is None:
             return "no screenshot available"
@@ -80,11 +88,14 @@ def register_tools(mcp: FastMCP) -> None:
         DETAIL_LIST = detail
         detail_text = _detail_text(detail)
         output_level = output_level.lower()
+        saved_path = _save_labeled_tmp(dino_labeled_img) if save_to_tmp else ""
         if output_level == "text":
             return detail_text
+        if output_level == "path":
+            return saved_path or "save_to_tmp is false"
         if output_level == "image":
-            return MCPImage(data=base64.b64decode(dino_labeled_img), format="png")
-        return [detail_text, MCPImage(data=base64.b64decode(dino_labeled_img), format="png")]
+            return saved_path if save_to_tmp else MCPImage(data=base64.b64decode(dino_labeled_img), format="png")
+        return [detail_text, saved_path] if save_to_tmp else [detail_text, MCPImage(data=base64.b64decode(dino_labeled_img), format="png")]
 
     @mcp.tool()
     def treeland_click(idx: int, button: str = "left", clicks: int = 1):

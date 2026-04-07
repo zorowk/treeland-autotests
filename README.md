@@ -67,7 +67,7 @@ python -m remote.client screenshot ./screen.png
 ### MCP 最小工具集（编排交给上层）
 
 - `treeland_screenshot`：抓取原始截图
-- `omniparser_parse_last`：解析并标注最近一次截图（可选 `output_level=text|image|both`）
+- `omniparser_parse_last`：解析并标注最近一次截图（`output_level=text|image|both|path`，可选 `save_to_tmp=true` 保存标注图到 `/tmp`）
 - `treeland_click`：鼠标点击（`clicks=2` 为双击）
 - `treeland_mouse_move`：鼠标移动
 - `treeland_drags`：拖拽

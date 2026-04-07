@@ -67,7 +67,7 @@ If it saves a screenshot, gRPC auth and connectivity are working.
 ### Minimal MCP Tools (orchestration handled upstream)
 
 - `treeland_screenshot`: capture raw screenshot
-- `omniparser_parse_last`: parse + label last screenshot (`output_level=text|image|both`)
+- `omniparser_parse_last`: parse + label last screenshot (`output_level=text|image|both|path`, optional `save_to_tmp=true` to save labeled image to `/tmp`)
 - `treeland_click`: mouse click (`clicks=2` for double-click)
 - `treeland_mouse_move`: move mouse
 - `treeland_drags`: drag
