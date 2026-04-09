@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "omniparser_autogui_mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "omniparser-autogui-mcp"
+      ],
+      "env": {
+        "SSE_HOST": "0.0.0.0",
+        "SSE_PORT": "8651"
+      }
+    }
+  }
+}
