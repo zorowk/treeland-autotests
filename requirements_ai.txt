@@ -1,5 +1,0 @@
-mcp
-grpcio
-grpcio-tools
-Pillow
-requests
