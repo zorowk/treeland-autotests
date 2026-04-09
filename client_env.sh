@@ -17,11 +17,12 @@ sudo apt-get install -y wayland-utils
 sudo apt-get install -y xdotool
 sudo apt-get install -y grim
 sudo apt-get install -y wl-clipboard
+sudo apt-get install -y curl
 sudo apt-get install -y build-essential pkg-config
 sudo apt-get install -y cmake ninja-build
 sudo apt-get install -y libinput-tools
 sudo apt-get install -y gir1.2-atspi-2.0
-sudo apt-get install -y python3-dev python3-pip build-essential
+sudo apt-get install -y python3-dev build-essential
 sudo apt-get install -y libcairo2-dev libgirepository-2.0-dev
 sudo apt-get install -y scdoc
 
@@ -29,12 +30,8 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="${PROJECT_ROOT}/.venv"
 TMP_BASE="$(mktemp -d /tmp/treeland-autotests-deps.XXXXXX)"
 
-REPO_1_URL="https://github.com/zorowk/pyautogui.git"
-REPO_2_URL="https://github.com/zorowk/pyperclip.git"
 REPO_3_URL="https://github.com/zorowk/wl-find-cursor.git"
 REPO_4_URL="https://github.com/ReimuNotMoe/ydotool.git"
-REPO_1_DIR="${TMP_BASE}/pyautogui"
-REPO_2_DIR="${TMP_BASE}/pyperclip"
 REPO_3_DIR="${TMP_BASE}/wl-find-cursor"
 REPO_4_DIR="${TMP_BASE}/ydotool"
 
@@ -102,45 +99,23 @@ else
   echo "Skipping ydotool install."
 fi
 
-echo "[3/7] Create python virtual environment: ${VENV_DIR}"
-python3 -m venv "${VENV_DIR}"
+echo "[3/7] Install uv"
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+command -v uv >/dev/null 2>&1 || {
+  echo "uv install failed. Ensure ~/.cargo/bin or ~/.local/bin is in PATH." >&2
+  exit 1
+}
 
-echo "[4/7] Activate venv and upgrade pip tooling"
+echo "[4/7] Create python virtual environment: ${VENV_DIR}"
+uv venv "${VENV_DIR}"
+
+echo "[5/7] Activate venv"
 # shellcheck disable=SC1091
 source "${VENV_DIR}/bin/activate"
 
-# 新增：设置阿里云镜像 + trusted-host（避免 SSL 验证警告）
-pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple/
-pip config set install.trusted-host pypi.tuna.tsinghua.edu.cn
-
-# 升级 pip 等工具
-python -m pip install --upgrade pip setuptools wheel
-
-echo "[5/7] Clone required repositories into system temp dir: ${TMP_BASE}"
-if python - <<'PY'
-import pyautogui
-import pyperclip
-print(pyautogui.__name__, pyperclip.__name__)
-PY
-then
-  echo "pyautogui and pyperclip already installed in venv; skipping clone/install."
-else
-  git clone --depth 1 "${REPO_1_URL}" "${REPO_1_DIR}"
-  git clone --depth 1 "${REPO_2_URL}" "${REPO_2_DIR}"
-
-  echo "[6/7] Install pyautogui and pyperclip from cloned repositories"
-  python -m pip install "${REPO_1_DIR}" "${REPO_2_DIR}"
-fi
-
-echo "[7/7] Install requires python package"
-python -m pip install pygobject
-python -m pip install python3-pyatspi
-python -m pip install openpyxl
-python -m pip install pandas
-python -m pip install dogtail
-python -m pip install pytest
-python -m pip install allure-pytest
-python -m pip install allure-python-commons
+echo "[6/7] Install python dependencies via uv"
+uv sync
 
 if python - <<'PY'
 import pyatspi
