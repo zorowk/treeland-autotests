@@ -1,69 +1,53 @@
-# omniparser-autogui-mcp
+# treeland-autogui-mcp
 
-这是一个使用 [OmniParser](https://github.com/microsoft/OmniParser) 解析屏幕，并自动操作 GUI 的 [MCP server](https://modelcontextprotocol.io/introduction)。
+（[中文版](README_zh.md)）
+
+这是一个使用 [OmniParser](https://github.com/microsoft/OmniParser) 解析屏幕并自动操作 GUI 的 [MCP server](https://modelcontextprotocol.io/introduction)。
 已在 Windows 上验证可用。
 
-## 许可证说明
-
-本仓库为 MIT License，但子模块与依赖包遵循各自的许可证。  
-OmniParser 仓库（子模块）为 CC-BY-4.0。  
-OmniParser 模型权重分别遵循各自的许可证（[参考](https://github.com/microsoft/OmniParser?tab=readme-ov-file#model-weights-license)）。
-
-## 安装方法
+## 安装
 
 1. 请执行以下命令：
 
 ```
-git clone --recursive https://github.com/NON906/omniparser-autogui-mcp.git
-cd omniparser-autogui-mcp
+git clone https://github.com/zorowk/treeland-aitests.git
+cd treeland-aitests
 uv sync
-uv run download_models.py
 ```
 
-（如果要运行 `langchain_example.py`，请改用 `uv sync --extra langchain`。）
+## 远程部署 + LangChain Agent 连接（SSE）
 
-2. 在 `claude_desktop_config.json` 中添加如下配置：
+在**测试机**上运行 MCP 服务，并在**控制机**通过 SSE 连接。
 
-```claude_desktop_config.json
+### 1) 测试机（运行 MCP 服务）
+
+```bash
+uv sync
+SSE_HOST=0.0.0.0 SSE_PORT=8000 uv run treeland-autogui-mcp
+```
+
+开放 `8000` 端口，并记录测试机 IP。
+
+### 2) 控制机（LangChain Agent）
+
+使用远程配置模板：
+
+```bash
+cp langchain_settings/mcp_config.remote.json langchain_settings/mcp_config.json
+```
+
+编辑 `langchain_settings/mcp_config.json`：
+
+```json
 {
   "mcpServers": {
-    "omniparser_autogui_mcp": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "D:\\CLONED_PATH\\omniparser-autogui-mcp",
-        "run",
-        "omniparser-autogui-mcp"
-      ],
-      "env": {
-        "PYTHONIOENCODING": "utf-8"
-      }
+    "mcp_machine_01": {
+      "transport": "sse",
+      "url": "http://TEST_MACHINE_1_IP:8000/sse"
     }
   }
 }
 ```
 
-（将 `D:\\CLONED_PATH\\omniparser-autogui-mcp` 替换为实际克隆目录。）
-
-`env` 还支持以下额外配置：
-
-- `OMNI_PARSER_BACKEND_LOAD`  
-  若在其他客户端（如 [LibreChat](https://github.com/danny-avila/LibreChat)）中无法正常工作，请设置为 `1`。
-
-- `TARGET_WINDOW_NAME`  
-  如果希望仅操作指定窗口，请设置窗口标题；不设置则对全屏生效。
-
-- `OMNI_PARSER_SERVER`  
-  如果希望在其他设备上执行 OmniParser 解析，请指定服务器地址与端口，例如 `127.0.0.1:8000`。  
-  解析服务器可通过 `uv run omniparserserver` 启动。
-
-- `SSE_HOST`, `SSE_PORT`  
-  设置后将使用 SSE 而非 stdio 通信。
-
-- `SOM_MODEL_PATH`, `CAPTION_MODEL_NAME`, `CAPTION_MODEL_PATH`, `OMNI_PARSER_DEVICE`, `BOX_TRESHOLD`  
-  OmniParser 的高级配置项，通常不需要修改。
-
-## 提示示例
-
-- 查看当前屏幕，并在浏览器中搜索「MCP 服务器」。
-
+然后运行你的 LangChain agent（例如 `langchain_example.py`）通过 SSE 连接。
+（如果要运行 `langchain_example.py`，请改用 `uv sync --extra langchain`。）
