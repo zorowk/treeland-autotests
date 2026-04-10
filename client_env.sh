@@ -115,7 +115,7 @@ if command -v uv >/dev/null 2>&1; then
 fi
 
 echo "[4/7] Create python virtual environment: ${VENV_DIR}"
-uv venv "${VENV_DIR}"
+uv --clear venv "${VENV_DIR}" --clear
 
 echo "[5/7] Activate venv"
 # shellcheck disable=SC1091
